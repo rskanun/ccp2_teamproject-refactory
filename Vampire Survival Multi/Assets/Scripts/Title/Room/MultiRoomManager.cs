@@ -1,5 +1,4 @@
 ﻿using ExitGames.Client.Photon;
-using Mono.Cecil.Cil;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
@@ -178,7 +177,7 @@ public class MultiRoomManager : MonoBehaviourPunCallbacks
     }
 
     private void SearchRoomByCode(string keyword)           // 코드 통한 방 입장
-    {       
+    {
         OnEnterRoom(keyword);
     }
 
@@ -218,7 +217,7 @@ public class MultiRoomManager : MonoBehaviourPunCallbacks
         {
             ShowText();
             Invoke("HideText", 3f);
-            isButtonPressed = false; 
+            isButtonPressed = false;
         }
         else
         {
