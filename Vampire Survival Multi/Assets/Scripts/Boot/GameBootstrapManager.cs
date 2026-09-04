@@ -2,14 +2,37 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Photon.Pun;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class GameBootstrapManager : MonoBehaviour
 {
+    [Title("타이틀 씬")]
+#if UNITY_EDITOR
+    [SerializeField, OnValueChanged(nameof(SceneAssetChanged))]
+    private SceneAsset titleScene;
+#endif
+    [SerializeField, ReadOnly] private string titleSceneName;
+
+    [Title("참조 컴포넌트")]
     [SerializeField] private BootstrapLoadingViewer loadingViewer;
-    [SerializeField] private BootstrapAlertViewer alertViewer;
+    [SerializeField] private Alert alert;
 
     private CancellationTokenSource cts;
+
+#if UNITY_EDITOR
+    private void SceneAssetChanged()
+    {
+        if (titleScene == null) return;
+
+        titleSceneName = titleScene.name;
+    }
+#endif
 
     private void OnDestroy()
     {
@@ -39,8 +62,6 @@ public class GameBootstrapManager : MonoBehaviour
 
     private async UniTask BootstrapAsync()
     {
-        await UniTask.WaitForSeconds(2.0f);
-
         // 로딩 취소 토큰 할당
         LoadingCancel(); // 이전 토큰 초기화
         cts = new CancellationTokenSource();
@@ -63,7 +84,7 @@ public class GameBootstrapManager : MonoBehaviour
             bool photonConnected = await ConnectPhotonAsync(cts.Token);
             if (!photonConnected)
             {
-                alertViewer.ViewAlert("서버 연결에 실패했습니다.", "종료", Application.Quit);
+                alert.Show("서버 연결에 실패했습니다.", "종료", Application.Quit);
             }
 
             // 포톤 로비 연결(75% -> 100%)
@@ -71,10 +92,11 @@ public class GameBootstrapManager : MonoBehaviour
             bool lobbyConnected = await ConnectPhotonLobbyAsync(cts.Token);
             if (!lobbyConnected)
             {
-                alertViewer.ViewAlert("로비 연결에 실패했습니다.", "종료", Application.Quit);
+                alert.Show("로비 연결에 실패했습니다.", "종료", Application.Quit);
             }
 
-            Debug.Log("로딩 완료");
+            // 타이틀 씬 로드
+            await SceneManager.LoadSceneAsync(titleSceneName);
         }
         catch (OperationCanceledException)
         {
@@ -82,7 +104,7 @@ public class GameBootstrapManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            alertViewer.ViewAlert(e.Message, "종료", Application.Quit);
+            alert.Show(e.Message, "종료", Application.Quit);
         }
         finally
         {
@@ -136,10 +158,10 @@ public class GameBootstrapManager : MonoBehaviour
         switch (result)
         {
             case VersionCheckResult.Maintenance:
-                alertViewer.ViewAlert(data.maintenance_msg, "종료", Application.Quit);
+                alert.Show(data.maintenance_msg, "종료", Application.Quit);
                 break;
             case VersionCheckResult.NeedsUpdate:
-                alertViewer.ViewAlert($"최신버전이 아닙니다: {Application.version}->{data.client_version}", "종료", Application.Quit);
+                alert.Show($"최신버전이 아닙니다: {Application.version}->{data.client_version}", "종료", Application.Quit);
                 break;
         }
     }

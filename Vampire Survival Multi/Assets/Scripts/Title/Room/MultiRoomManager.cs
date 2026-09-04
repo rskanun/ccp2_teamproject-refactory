@@ -26,48 +26,6 @@ public class MultiRoomManager : MonoBehaviourPunCallbacks
 
     private bool isButtonPressed = false;
 
-    public void OnClickMultiPlay()
-    {
-        if (PhotonNetwork.IsConnected == false)
-        {
-            // 서버 연결
-            photonManager.ConnectServer();
-            ui.SetActiveRoomList(true);
-        }
-        else
-        {
-            // 이미 서버에 접속되어 있으면 로비 바로 입장
-            PhotonNetwork.JoinLobby();
-            ui.SetActiveRoomList(true);
-        }
-    }
-
-    public void OnClickRoomCode()
-    {
-        if (PhotonNetwork.IsConnected == false)
-        {
-            // 서버 연결
-            photonManager.ConnectServer();
-        }
-        else
-        {
-            // 이미 서버에 접속되어 있으면 로비 바로 입장
-            PhotonNetwork.JoinLobby();
-            ui.SetActiveRoomList(false);
-        }
-    }
-    /*
-    public override void OnJoinedLobby()
-    {
-        // 로비에 있을 때에만 방 목록 보이기
-        ui.SetActiveRoomList(true);
-    }*/
-
-    public void OnExit()
-    {
-        PhotonNetwork.LeaveLobby();
-    }
-
     public override void OnLeftLobby()
     {
         // 방 목록 비활성화

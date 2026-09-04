@@ -1,4 +1,5 @@
 ﻿using Photon.Realtime;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -28,14 +29,12 @@ public class MultiRoomUI : MonoBehaviour
         roomList.SetActive(isActive);
     }
 
-    public void AddRoomObj(RoomInfo info, RoomManager.SelectedCallback listener)
+    public void AddRoomObj(RoomInfo info, Action<string, string> listener)
     {
         // 방 정보를 표시하는 오브젝트 소환
-        GameObject roomObj = Instantiate(roomPrefab, roomContainer.transform);
-
-        RoomManager room = roomObj.GetComponent<RoomManager>();
-        room.InitRoomInfo(info);
-        room.SetClickHandler(listener);
+        var roomObj = Instantiate(roomPrefab, roomContainer.transform);
+        var room = roomObj.GetComponent<RoomEntry>();
+        room.SetRoomInfo(info, listener);
 
         // 해당 오브젝트를 목록에 저장
         roomObjList.Add(roomObj);
