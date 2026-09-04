@@ -1,5 +1,5 @@
 {
   "client_version": "1.0.0",
-  "is_maintenance": true,
-  "maintenance_msg": "서버 점검 중입니다. (16:00~17:00)"
+  "is_maintenance": false,
+  "maintenance_msg": "서버 점검 중입니다."
 }
