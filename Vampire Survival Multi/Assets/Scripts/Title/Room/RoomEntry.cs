@@ -20,14 +20,14 @@ public class RoomEntry : MonoBehaviour
 
     // 비공개 방 정보
     private string id;
-    private string password;
+    private bool isPrivate;
 
-    private Action<string, string> enterCallback;
+    private Action<string, bool> enterCallback;
 
     private const string PROP_ROOM_NAME = "RoomName";
     private const string PROP_ROOM_TYPE = "RoomType";
 
-    public void SetRoomInfo(RoomInfo info, Action<string, string> enterHandler)
+    public void SetRoomInfo(RoomInfo info, Action<string, bool> enterHandler)
     {
         if (info != null && info.CustomProperties != null)
         {
@@ -48,7 +48,12 @@ public class RoomEntry : MonoBehaviour
                     RoomType.Private => "비공개",
                     _ => ""
                 };
+
+                isPrivate = roomType == RoomType.Private;
             }
+
+            // 방 ID 설정
+            id = info.Name;
         }
 
         // 방 인원 수 설정
@@ -60,6 +65,6 @@ public class RoomEntry : MonoBehaviour
 
     public void OnEnter()
     {
-        enterCallback?.Invoke(id, password);
+        enterCallback?.Invoke(id, isPrivate);
     }
 }

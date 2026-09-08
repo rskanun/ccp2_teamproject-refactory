@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Vampire Survival Multi/Assets/Scripts/Confirm/ConfirmUI.cs.meta
 guid: 89b3ff4ffa1642b44b8c8be9c0373861
-========
-guid: 9ce51d9351f8fd54ab20ab0effbbf23b
->>>>>>>> upstream/feature/Multi:Vampire Survival Multi/Assets/Scripts/LobbyScene/Class/ClassPanelUI.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

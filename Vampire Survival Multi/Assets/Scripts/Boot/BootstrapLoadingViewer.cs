@@ -56,7 +56,6 @@ public class BootstrapLoadingViewer : MonoBehaviour
             currentProgress = Mathf.MoveTowards(currentProgress, targetProgress, fillSpeed);
             SetProgressUI(currentProgress);
 
-            Debug.Log(currentProgress);
             await UniTask.Yield(PlayerLoopTiming.Update, ct);
         }
     }

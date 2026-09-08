@@ -18,7 +18,7 @@ public class MultiRoomManager : MonoBehaviourPunCallbacks
     [SerializeField] private ErrorManager errorManager;
 
     // 방 리스트
-    private Dictionary<string, RoomInfo> cachedRoomList;
+    private Dictionary<string, Photon.Realtime.RoomInfo> cachedRoomList;
     //방 찾기 실패 메세지
     public TextMeshProUGUI messageText;
     [SerializeField]
@@ -47,7 +47,7 @@ public class MultiRoomManager : MonoBehaviourPunCallbacks
     * 현재 개설된 방 목록 표시
     ***************************************************************/
 
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList)
     {
         // 기본 오브젝트 삭제
         ui.RemoveAllRooms();
@@ -56,16 +56,16 @@ public class MultiRoomManager : MonoBehaviourPunCallbacks
         UpdateCachedRoomList(roomList);
 
         // 방 목록 생성
-        List<RoomInfo> createRoomList = new List<RoomInfo>(cachedRoomList.Values);
+        List<Photon.Realtime.RoomInfo> createRoomList = new List<Photon.Realtime.RoomInfo>(cachedRoomList.Values);
         CreateRoomList(createRoomList);
     }
 
-    private void UpdateCachedRoomList(List<RoomInfo> roomList)
+    private void UpdateCachedRoomList(List<Photon.Realtime.RoomInfo> roomList)
     {
         if (cachedRoomList == null)
-            cachedRoomList = new Dictionary<string, RoomInfo>();
+            cachedRoomList = new Dictionary<string, Photon.Realtime.RoomInfo>();
 
-        foreach (RoomInfo room in roomList)
+        foreach (Photon.Realtime.RoomInfo room in roomList)
         {
             string title = room.Name;
 
@@ -81,9 +81,9 @@ public class MultiRoomManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private void CreateRoomList(List<RoomInfo> roomList)
+    private void CreateRoomList(List<Photon.Realtime.RoomInfo> roomList)
     {
-        foreach (RoomInfo room in roomList)
+        foreach (Photon.Realtime.RoomInfo room in roomList)
         {
             if (room.RemovedFromList == false)
             {
@@ -128,7 +128,7 @@ public class MultiRoomManager : MonoBehaviourPunCallbacks
             // 키워드가 포함된 방만 생성 (대소문자 구분하지 않음)
             if (title.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                RoomInfo room = cachedRoomList[title];
+                Photon.Realtime.RoomInfo room = cachedRoomList[title];
                 ui.AddRoomObj(room, (id, roomPassword) => OnEnterRoom(id, roomPassword));
             }
         }

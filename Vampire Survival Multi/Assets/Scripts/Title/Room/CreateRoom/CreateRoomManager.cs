@@ -1,4 +1,5 @@
-﻿using ExitGames.Client.Photon;
+﻿using System;
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -12,28 +13,30 @@ public class CreateRoomManager : MonoBehaviour
     public void CreateNewRoom()
     {
         // 방 만들기
-        RoomOptions options = GetCreateOptions();
-        PhotonNetwork.CreateRoom(null, options, null);
-    }
+        var properties = new Hashtable();
 
-    private RoomOptions GetCreateOptions()
-    {
-        Hashtable properties = new Hashtable();
+        string id = Guid.NewGuid().ToString();
+        string title = ui.GetRoomName();
+        var type = ui.GetRoomType();
+        string pw = ui.GetPassword();
+        string hashPw = SecurityUtility.GetPasswordHash(pw, id);
 
-        string[] keys = new string[3] { "RoomName", "RoomType", "Password" };
+        string[] keys = new string[4] { "RoomId", "RoomName", "RoomType", "RoomPasswordHash" };
 
-        properties.Add(keys[0], ui.GetRoomName());
-        properties.Add(keys[1], ui.GetRoomType());
-        properties.Add(keys[2], ui.GetPassword());
+        properties.Add(keys[0], id);
+        properties.Add(keys[1], title);
+        properties.Add(keys[2], type);
+        properties.Add(keys[3], hashPw);
 
-        RoomOptions options = new RoomOptions();
+        RoomOptions options = new RoomOptions
+        {
+            MaxPlayers = ui.GetMaxPlayer(),
+            IsVisible = type != RoomType.Hidden,
+            CustomRoomProperties = properties,
+            CustomRoomPropertiesForLobby = keys
+        };
 
-        options.MaxPlayers = ui.GetMaxPlayer();
-        options.IsVisible = (properties[keys[1]].Equals(RoomType.Hidden) == false);
-        options.CustomRoomProperties = properties;
-        options.CustomRoomPropertiesForLobby = keys;
-
-        return options;
+        PhotonNetwork.CreateRoom(id, options, null);
     }
 
     public void EnablePassword()
@@ -56,7 +59,7 @@ public class CreateRoomManager : MonoBehaviour
     {
         RoomType type = ui.GetRoomType();
 
-        if (type.Equals (RoomType.Private))
+        if (type.Equals(RoomType.Private))
         {
             bool isActive = ui.IsInputPw && ui.IsInputTitle;
 

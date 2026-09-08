@@ -33,7 +33,7 @@ public class MultiRoomUI : MonoBehaviour
     {
         // 방 정보를 표시하는 오브젝트 소환
         var roomObj = Instantiate(roomPrefab, roomContainer.transform);
-        var room = roomObj.GetComponent<RoomEntry>();
+        var room = roomObj.GetComponent<RoomItem>();
         room.SetRoomInfo(info, listener);
 
         // 해당 오브젝트를 목록에 저장
