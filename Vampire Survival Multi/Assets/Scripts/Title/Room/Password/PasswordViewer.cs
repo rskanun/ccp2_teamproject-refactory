@@ -16,7 +16,7 @@ public class PasswordViewer : MonoBehaviour
     {
         if (completionSource != null)
         {
-            throw new InvalidOperationException("Password input is already awaiting.");
+            throw new InvalidOperationException("비밀번호 입력 대기 중입니다.");
         }
 
         completionSource = new UniTaskCompletionSource<string>();
