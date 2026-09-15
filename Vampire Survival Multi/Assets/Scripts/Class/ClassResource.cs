@@ -61,6 +61,7 @@ public class ClassResource : ScriptableObject
     [Title("직업 목록")]
     [SerializeField] private ClassData _defaultClass;
     [SerializeField] private List<ClassData> _classList = new();
+    public IReadOnlyList<ClassData> ClassList => _classList;
 
     public ClassData GetDefaultClass()
     {

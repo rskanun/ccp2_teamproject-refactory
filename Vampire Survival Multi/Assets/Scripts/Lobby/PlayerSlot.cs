@@ -13,9 +13,10 @@ public class PlayerSlot : MonoBehaviour
     [SerializeField] private Image closedMark;
     [SerializeField] private GameObject localMark;
     [SerializeField] private GameObject readyMark;
-    [SerializeField] private GameObject adminMark;
+    [SerializeField] private GameObject masterMark;
 
     [Title("플레이어 조작 메뉴")]
+    [SerializeField] private Button playerControlMenuButton;
     [SerializeField] private GameObject playerControlMenu;
 
     public void ShowPlayerInfo(bool isActive)
@@ -43,9 +44,14 @@ public class PlayerSlot : MonoBehaviour
         readyMark.SetActive(isActive);
     }
 
-    public void SetAdminMark(bool isActive)
+    public void SetMasterMark(bool isActive)
     {
-        adminMark.SetActive(isActive);
+        masterMark.SetActive(isActive);
+    }
+
+    public void SetPlayerControlMenuButton(bool isActive)
+    {
+        playerControlMenuButton.gameObject.SetActive(isActive);
     }
 
     public void SetPlayerControlMenu(bool isActive)

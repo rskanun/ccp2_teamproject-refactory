@@ -1,10 +1,15 @@
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using UnityEngine;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private List<PlayerSlot> slots = new();
+    [SerializeField] private LobbyViewer viewer;
+
+    public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, Hashtable changedProps) => viewer.RefreshSlotsView();
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged) => viewer.RefreshSlotsView();
+    public override void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient) => viewer.RefreshSlotsView();
 
     private void Start()
     {
@@ -14,8 +19,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             InitLockedSlot();
         }
-
-        RefreshSlotsView();
     }
 
     private void InitLockedSlot()
@@ -24,7 +27,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         int unlockCount = PhotonNetwork.CurrentRoom.MaxPlayers;
 
         // 4321 순서
-        for (int i = slots.Count - 1; i >= 0; i--)
+        for (int i = viewer.SlotCount - 1; i >= 0; i--)
         {
             slotState = (byte)(slotState << 1 + (unlockCount > i ? 0 : 1));
         }
@@ -57,9 +60,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         // 방 슬롯 상태 설정
         UpdateSlot(slotIdx, true);
-
-        // UI 전체 적용
-        photonView.RPC(nameof(RefreshSlotsView), RpcTarget.All);
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         byte state = PhotonNetwork.CurrentRoom.GetSlotState();
 
         // 해당 칸의 슬롯이 비어있는지, 왼쪽부터 확인
-        for (int i = 0; i < slots.Count; i++)
+        for (int i = 0; i < viewer.SlotCount; i++)
         {
             // 0 = 비어있음, 1 = 닫혀있거나, 누군가 있음
             if (((state >> i) & 1) == 1)
@@ -106,49 +106,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.SetSlotState(newState);
     }
 
-    [PunRPC]
-    private void RefreshSlotsView()
+    public void TransferMasterClient(Photon.Realtime.Player newMaster)
     {
-        int visits = 0;
-
-        // 모든 플레이어에 대해서 순차적으로 UI 갱신
-        var players = PhotonNetwork.CurrentRoom.Players.Values;
-        foreach (var player in players)
+        // 방장 전용 함수
+        if (!PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-            // 슬롯 설정에 필요한 데이터
-            byte slotIdx = player.GetSlotNumber();
-            byte classId = player.GetClassID();
-            bool isReady = player.GetReadyState();
-            bool isLocal = player.IsLocal;
-            bool isAdmin = player.IsMasterClient;
-            var classData = ClassResource.Instance.GetClass(classId);
-            var className = (classData == null) ? "" : classData.Name;
-
-            // 슬롯 설정
-            var slot = slots[slotIdx];
-            slot.ShowPlayerInfo(true);
-            slot.SetClassName(className);
-            slot.SetReadyMark(isReady);
-            slot.SetAdminMark(isAdmin);
-            slot.SetLocalMark(isLocal);
-
-            // 방문 등록
-            visits &= 1 << slotIdx;
+            return;
         }
 
-        byte slotsState = PhotonNetwork.CurrentRoom.GetSlotState();
-        for (int i = 0; i < slots.Count; i++)
-        {
-            // 플레이어가 있는 슬롯 건너뛰기
-            if (((visits >> i) & 1) == 1) continue;
-
-            bool isOccupied = ((slotsState >> i) & 1) == 1;
-
-            var slot = slots[i];
-            slot.ShowPlayerInfo(false);
-            slot.SetClosedMark(isOccupied);
-        }
+        PhotonNetwork.SetMasterClient(newMaster);
     }
-
-
 }
