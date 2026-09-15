@@ -17,7 +17,7 @@ public class ClassData : ObjectData
         get { return _lifeSteal; }
     }
 
-    [Header("°ø°İ ¹× ½ºÅ³")]
+    [Header("ê³µê²© ë° ìŠ¤í‚¬")]
     [SerializeField]
     private Skill _passiveSkill;
     public Skill PassiveSkill
@@ -32,7 +32,7 @@ public class ClassData : ObjectData
         get { return _activeSkill; }
     }
 
-    [Header("Å¬·¡½º Á¤º¸")]
+    [Header("í´ë˜ìŠ¤ ì •ë³´")]
     [SerializeField]
     private int _id;
     public int ID

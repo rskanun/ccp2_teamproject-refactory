@@ -29,7 +29,7 @@ public class PlayerPanelManager : MonoBehaviourPun
 
             ui.SetReadyPanel(value);
         }
-    }    
+    }
 
     // 패널 정보
     private bool _isClosed;
@@ -187,7 +187,7 @@ public class PlayerPanelManager : MonoBehaviourPun
     [PunRPC]
     private void SetClass(int id)
     {
-        ClassData classData = ClassResource.Instance.FindClass(id);
+        ClassData classData = ClassResource.Instance.GetClass(id);
 
         playerData.PlayerClass = classData;
         ui.SetClassName(classData.Name);

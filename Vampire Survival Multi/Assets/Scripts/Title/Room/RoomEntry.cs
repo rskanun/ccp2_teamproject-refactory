@@ -24,36 +24,26 @@ public class RoomEntry : MonoBehaviour
 
     private Action<string, bool> enterCallback;
 
-    private const string PROP_ROOM_NAME = "RoomName";
-    private const string PROP_ROOM_TYPE = "RoomType";
-
     public void SetRoomInfo(RoomInfo info, Action<string, bool> enterHandler)
     {
         if (info != null && info.CustomProperties != null)
         {
-            // 방 이름 정보 설정
-            if (info.CustomProperties.TryGetValue(PROP_ROOM_NAME, out var nameObj) &&
-                nameObj is string roomName)
-            {
-                titleText.text = roomName;
-            }
+            // 방 이름 설정
+            titleText.text = info.GetName();
 
-            // 방 타입 정보 설정
-            if (info.CustomProperties.TryGetValue(PROP_ROOM_TYPE, out var typeObj) &&
-                typeObj is RoomType roomType)
+            // 방 타입 설정
+            var type = info.GetRoomType();
+            typeText.text = type switch
             {
-                typeText.text = roomType switch
-                {
-                    RoomType.Public => "공개",
-                    RoomType.Private => "비공개",
-                    _ => ""
-                };
+                RoomType.Public => "공개",
+                RoomType.Private => "비공개",
+                _ => ""
+            };
 
-                isPrivate = roomType == RoomType.Private;
-            }
+            isPrivate = type == RoomType.Private;
 
             // 방 ID 설정
-            id = info.Name;
+            id = info.GetID();
         }
 
         // 방 인원 수 설정

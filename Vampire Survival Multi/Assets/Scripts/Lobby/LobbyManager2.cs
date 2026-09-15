@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LobbyManager : MonoBehaviourPunCallbacks
+public class LobbyManager2 : MonoBehaviourPunCallbacks
 {
     [Header("참조 스크립트")]
     [SerializeField] private LobbyUI ui;
 
     [Header("플레이어 패널 스크립트")]
-    [SerializeField] 
+    [SerializeField]
     private List<PlayerPanelManager> playerPanels;
     private PlayerPanelManager myPanelManager;
 
@@ -464,7 +464,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void AsyncClassData(int classID, int playerIndex)
     {
-        ClassData classData = ClassResource.Instance.FindClass(classID);
+        ClassData classData = ClassResource.Instance.GetClass(classID);
         PlayerData playerData = PlayerResource.Instance.PlayerDatas[playerIndex];
 
         playerData.InitData(classData);

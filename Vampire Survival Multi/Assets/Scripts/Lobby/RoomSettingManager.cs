@@ -6,7 +6,7 @@ public class RoomSettingManager : MonoBehaviour
 {
     [Header("참조 스크립트")]
     [SerializeField] private RoomSettingUI ui;
-    [SerializeField] private LobbyManager lobbyManager;
+    [SerializeField] private LobbyManager2 lobbyManager;
 
     private void Start()
     {

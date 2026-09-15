@@ -71,7 +71,7 @@ public class LocalPlayerData : ScriptableObject
             {
                 if (cashedClassData == null)
                 {
-                    cashedClassData = ClassResource.Instance.ClassList[0];
+                    cashedClassData = ClassResource.Instance.GetDefaultClass();
 
                     SetClass(cashedClassData);
                 }
@@ -93,7 +93,7 @@ public class LocalPlayerData : ScriptableObject
                 // 플레이어 정보는 있지만, 직업이 정해지지 않은 경우
                 if (PlayerData.PlayerClass == null)
                 {
-                    ClassData initClass = ClassResource.Instance.ClassList[0];
+                    ClassData initClass = ClassResource.Instance.GetDefaultClass();
 
                     SetClass(initClass);
                 }

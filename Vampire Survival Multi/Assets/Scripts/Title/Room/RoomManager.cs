@@ -135,10 +135,10 @@ public class RoomManager : MonoBehaviourPunCallbacks
             string hashPassword = SecurityUtility.GetPasswordHash(roomParams.password, id);
 
             // 방 생성
-            var props = new Hashtable()
+            Hashtable props = RoomPropertyExtensions.CreateBuilder()
                 .SetID(id)
                 .SetName(roomParams.title)
-                .SetType(roomParams.type)
+                .SetRoomType(roomParams.type)
                 .SetPasswordHash(hashPassword);
 
             var options = new RoomOptions
@@ -216,7 +216,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
             string inputPW = await pwViewer.ShowInputAsync(ct);
             string inputHash = SecurityUtility.GetPasswordHash(inputPW, id);
 
-            var props = new Hashtable()
+            Hashtable props = RoomPropertyExtensions.CreateBuilder()
                 .SetID(id)
                 .SetPasswordHash(inputHash);
 

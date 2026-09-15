@@ -1,7 +1,13 @@
-﻿using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
+using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
+using System.Linq;
+
+
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class ClassResource : ScriptableObject
 {
@@ -52,23 +58,22 @@ public class ClassResource : ScriptableObject
         }
     }
 
-    [Header("직업 목록")]
-    [SerializeField]
-    private List<ClassData> _classList;
-    public List<ClassData> ClassList
-    {
-        get
-        {
-            if (_classList == null)
-                _classList = new List<ClassData>();
+    [Title("직업 목록")]
+    [SerializeField] private ClassData _defaultClass;
+    [SerializeField] private List<ClassData> _classList = new();
 
-            return _classList;
-        }
+    public ClassData GetDefaultClass()
+    {
+        if (_defaultClass != null)
+            return _defaultClass;
+
+        // 설정한 초기 직업이 없다면 직업 목록의 첫번째 요소 리턴
+        return _classList.FirstOrDefault();
     }
 
-    public ClassData FindClass(int id)
+    public ClassData GetClass(int id)
     {
-        foreach (ClassData classData in ClassList)
+        foreach (var classData in _classList)
         {
             if (classData.ID == id)
             {
