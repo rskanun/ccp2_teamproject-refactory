@@ -1,4 +1,4 @@
-﻿using Photon.Pun;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         GameData gameData = GameData.Instance;
 
-        for(int i = 0; i < playerDatas.Count; i++)
+        for (int i = 0; i < playerDatas.Count; i++)
         {
             PlayerData playerData = playerDatas[i];
             if (playerData.IsPlaying)
