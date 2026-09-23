@@ -174,6 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1caa5f01a3b83684ea3a48515a3dcef0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resource: {fileID: 0}
   tipText: {fileID: 64664091}
 --- !u!1 &64664089
 GameObject:
@@ -594,7 +595,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1280233651}
   - component: {fileID: 1280233653}
-  - component: {fileID: 1280233652}
+  - component: {fileID: 1280233655}
   - component: {fileID: 1280233654}
   m_Layer: 5
   m_Name: Loading
@@ -627,22 +628,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1280233652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1280233650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e41fd310e04faa3468d55f52edd184d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  percentage: {fileID: 592700516}
-  loadingTxt: {fileID: 1968164973}
-  completeTxt: {fileID: 1323876052}
-  loadingBar: {fileID: 1474663841}
 --- !u!114 &1280233653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,10 +637,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1280233650}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d688e38a8219964cb419c79bc0d6b64, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f093bc7cb827fa41a2a27a7e9ffa3b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ui: {fileID: 1280233652}
+  loadingViewer: {fileID: 1280233655}
 --- !u!114 &1280233654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -678,6 +663,24 @@ MonoBehaviour:
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1280233655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1280233650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aee8817a4fce45148bcc31355a9c0fde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progressText: {fileID: 592700516}
+  loadingText: {fileID: 1968164973}
+  stateText: {fileID: 1323876052}
+  tipText: {fileID: 64664091}
+  loadingBar: {fileID: 1474663841}
+  loadingAnimationDelay: 0.5
 --- !u!1 &1280941224
 GameObject:
   m_ObjectHideFlags: 0

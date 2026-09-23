@@ -20,7 +20,7 @@ public class InGamePreloadService : IDisposable
 
     public async UniTask<bool> LoadInGameAssets(IProgress<float> progress, CancellationToken ct)
     {
-        // ÀÌ¹Ì ·ÎµåµÈ »óÅÂ¸é °á°ú¸¸ ¸®ÅÏ
+        // ì´ë¯¸ ë¡œë“œëœ ìƒíƒœë©´ ê²°ê³¼ë§Œ ë¦¬í„´
         if (IsLoaded)
         {
             progress?.Report(1.0f);
@@ -29,18 +29,18 @@ public class InGamePreloadService : IDisposable
 
         try
         {
-            // ¿¡¼Â ·Îµå ½ÃÀÛ
+            // ì—ì…‹ ë¡œë“œ ì‹œì‘
             loadAssetHandle = Addressables.LoadAssetsAsync<UnityEngine.Object>(ASSET_LABEL, null);
             await loadAssetHandle.ToUniTask(
                 progress: progress,
                 cancellationToken: ct
             );
 
-            // »óÅÂ °ËÁõ
+            // ìƒíƒœ ê²€ì¦
             if (loadAssetHandle.Status != AsyncOperationStatus.Succeeded)
             {
-                // ½ÇÆĞ ½Ã ÀÚ¿ø ÇØÁ¦
-                Debug.LogError($"[InGamePreloadService] ¿¡¼Â ·Îµå ½ÇÆĞ: {loadAssetHandle.OperationException}");
+                // ì‹¤íŒ¨ ì‹œ ìì› í•´ì œ
+                Debug.LogError($"[InGamePreloadService] ì—ì…‹ ë¡œë“œ ì‹¤íŒ¨: {loadAssetHandle.OperationException}");
                 UnloadInGameAssets();
                 return false;
             }
@@ -49,13 +49,13 @@ public class InGamePreloadService : IDisposable
         }
         catch (OperationCanceledException)
         {
-            // ÅäÅ« Ãë¼ÒÀÇ °æ¿ì »óÀ§ ½ÃÄö¼­·Î ´øÁö±â
+            // í† í° ì·¨ì†Œì˜ ê²½ìš° ìƒìœ„ ì‹œí€€ì„œë¡œ ë˜ì§€ê¸°
             UnloadInGameAssets();
             throw;
         }
         catch (Exception ex)
         {
-            Debug.LogError($"[InGamePreloadService] ¿¡¼Â ·Îµå Áß ¿¹¿Ü ¹ß»ı: {ex}");
+            Debug.LogError($"[InGamePreloadService] ì—ì…‹ ë¡œë“œ ì¤‘ ì˜ˆì™¸ ë°œìƒ: {ex}");
             UnloadInGameAssets();
             return false;
         }

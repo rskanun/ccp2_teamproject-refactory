@@ -72,6 +72,12 @@ public static class RoomPropertyExtensions
         var props = new Hashtable { { SLOT_STATE, state } };
         room.SetCustomProperties(props);
     }
+
+    public static void SetName(this Room room, string name)
+    {
+        var props = new Hashtable { { ROOM_NAME, name } };
+        room.SetCustomProperties(props);
+    }
     #endregion
 
     #region Getter

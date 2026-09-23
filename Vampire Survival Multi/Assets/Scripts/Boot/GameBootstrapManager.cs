@@ -21,7 +21,6 @@ public class GameBootstrapManager : MonoBehaviour
 
     [Title("참조 컴포넌트")]
     [SerializeField] private BootstrapLoadingViewer loadingViewer;
-    [SerializeField] private Alert alert;
 
     private CancellationTokenSource cts;
 
@@ -84,7 +83,7 @@ public class GameBootstrapManager : MonoBehaviour
             bool photonConnected = await ConnectPhotonAsync(cts.Token);
             if (!photonConnected)
             {
-                alert.Show("서버 연결에 실패했습니다.", "종료", Application.Quit);
+                Alert.Show("서버 연결에 실패했습니다.", "종료", Application.Quit);
             }
 
             // 포톤 로비 연결(75% -> 100%)
@@ -92,7 +91,7 @@ public class GameBootstrapManager : MonoBehaviour
             bool lobbyConnected = await ConnectPhotonLobbyAsync(cts.Token);
             if (!lobbyConnected)
             {
-                alert.Show("로비 연결에 실패했습니다.", "종료", Application.Quit);
+                Alert.Show("로비 연결에 실패했습니다.", "종료", Application.Quit);
             }
 
             // 타이틀 씬 로드
@@ -104,7 +103,7 @@ public class GameBootstrapManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            alert.Show(e.Message, "종료", Application.Quit);
+            Alert.Show(e.Message, "종료", Application.Quit);
         }
         finally
         {
@@ -158,10 +157,10 @@ public class GameBootstrapManager : MonoBehaviour
         switch (result)
         {
             case VersionCheckResult.Maintenance:
-                alert.Show(data.maintenance_msg, "종료", Application.Quit);
+                Alert.Show(data.maintenance_msg, "종료", Application.Quit);
                 break;
             case VersionCheckResult.NeedsUpdate:
-                alert.Show($"최신버전이 아닙니다: {Application.version}->{data.client_version}", "종료", Application.Quit);
+                Alert.Show($"최신버전이 아닙니다: {Application.version}->{data.client_version}", "종료", Application.Quit);
                 break;
         }
     }

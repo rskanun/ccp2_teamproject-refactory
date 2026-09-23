@@ -5,6 +5,7 @@ public static class PlayerPropertyExtensions
     private const string SLOT_NUM = "sn";
     private const string CLASS_ID = "ci";
     private const string PLAYER_STATE = "ps";
+    private const string LOADING_COMPLETED = "lc";
 
     #region Builder
     public readonly ref struct PlayerPropertyBuilder
@@ -31,6 +32,12 @@ public static class PlayerPropertyExtensions
             return this;
         }
 
+        public PlayerPropertyBuilder SetLoadingState(bool isCompleted)
+        {
+            table[LOADING_COMPLETED] = isCompleted;
+            return this;
+        }
+
         public static implicit operator Hashtable(PlayerPropertyBuilder builder) => builder.table;
     }
 
@@ -50,6 +57,12 @@ public static class PlayerPropertyExtensions
     public static void SetReadyState(this Photon.Realtime.Player player, bool isReady)
     {
         var props = new Hashtable { { PLAYER_STATE, isReady } };
+        player.SetCustomProperties(props);
+    }
+
+    public static void SetLoadingState(this Photon.Realtime.Player player, bool isCompleted)
+    {
+        var props = new Hashtable { { LOADING_COMPLETED, isCompleted } };
         player.SetCustomProperties(props);
     }
     #endregion
@@ -73,6 +86,13 @@ public static class PlayerPropertyExtensions
     {
         return player.CustomProperties.TryGetValue(PLAYER_STATE, out var val) && val is bool isReady
             ? isReady
+            : false;
+    }
+
+    public static bool GetLoadingState(this Photon.Realtime.Player player)
+    {
+        return player.CustomProperties.TryGetValue(LOADING_COMPLETED, out var val) && val is bool isCompleted
+            ? isCompleted
             : false;
     }
     #endregion
